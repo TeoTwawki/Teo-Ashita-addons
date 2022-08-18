@@ -55,7 +55,7 @@ ashita.events.register('command', 'command_cb', function (e)
 
         print(string.format("Name: %s  ID: %d  Index: %d", entity.Name, target, index))
         print(string.format("Speed: %f  Animation Speed  %d", entity.MovementSpeed * 10, entity.AnimationSpeed * 10))
-        -- print(string.format("PosX: %f  PosZ: %f  PosY: %f", entity.X, entity.Y, entity.Z))
+        print(string.format("PosX: %f  PosY: %f  PosZ: %f", entity.Movement.LocalPosition.X, entity.Movement.LocalPosition.Y, entity.Movement.LocalPosition.Z))
 
         if #args >= 2 then
             if args[2]:any('flags') then
