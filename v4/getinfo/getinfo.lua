@@ -35,7 +35,7 @@ ashita.events.register('command', 'command_cb', function (e)
     local index  = AshitaCore:GetMemoryManager():GetTarget():GetTargetIndex(0)
     local entity = GetEntity(index)
 
-    if #args >= 1 and args[1]:ieq('/getinfo') then
+    if #args >= 1 and (args[1]:ieq('/getinfo') or args[1]:ieq('/gi')) then
         if #args == 3 and tonumber(args[3]) then
             if tonumber(args[3]) then
                 entity = GetEntity(bit.band(tonumber(args[3]), 0x0FFF))
@@ -53,7 +53,9 @@ ashita.events.register('command', 'command_cb', function (e)
             return
         end
 
-        print(string.format("Name: %s  ID: %d  Index: %d", entity.Name, target, index))
+        local targetHex = string.upper(string.format("%08x", target))
+        local indexHex  = string.upper(string.format("%04x", index))
+        print(string.format("Name: %s  ID: %d (0x%s)  Index: %d (0x%s)", entity.Name, target, targetHex, index, indexHex))
         print(string.format("Speed: %f  Animation Speed  %d", entity.MovementSpeed * 10, entity.AnimationSpeed * 10))
         print(string.format("PosX: %f  PosY: %f  PosZ: %f", entity.Movement.LocalPosition.X, entity.Movement.LocalPosition.Y, entity.Movement.LocalPosition.Z))
 
