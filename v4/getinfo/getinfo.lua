@@ -18,7 +18,7 @@
 
 addon.author    = 'TeoTwawki'
 addon.name      = 'getinfo'
-addon.version   = '1.0'
+addon.version   = '1.1'
 addon.desc      = 'Prints out info about the current cursor target'
 addon.link      = 'https://github.com/TeoTwawki/Teo-Ashita-addons'
 
@@ -60,7 +60,7 @@ ashita.events.register('command', 'command_cb', function (e)
         print(string.format("PosX: %f  PosY: %f  PosZ: %f", entity.Movement.LocalPosition.X, entity.Movement.LocalPosition.Y, entity.Movement.LocalPosition.Z))
 
         if #args >= 2 then
-            if args[2]:any('flags') then
+            if args[2]:any('flags') or args[3]:any('flags') then
                 print(string.format("Flags0: %d", entity.Render.Flags0)) -- Main Render Flags
                 print(string.format("Flags1: %d", entity.Render.Flags1)) -- Name Flags (Party, Away, Anon)
                 print(string.format("Flags2: %d", entity.Render.Flags2)) -- Name Flags (Bazaar, GM Icon, etc.)
@@ -70,7 +70,9 @@ ashita.events.register('command', 'command_cb', function (e)
                 print(string.format("Flags6: %d", entity.Render.Flags6)) -- Unknown
                 print(string.format("Flags7: %d", entity.Render.Flags7)) -- Overhead Flags (Hi-word: Jump Emote, Model Visibility etc.) (Low-word: Job Mastery Stars, Party Seek Mastery Star, etc. [Low-Byte:] Timer of some sort.)
                 print(string.format("Flags8: %d", entity.Render.Flags8)) -- Overhead Flags (Job mastery party.)
-            elseif args[2]:any('look') then
+            end
+
+            if args[2]:any('look') or args[3]:any('look') then
                 print(string.format("Race ID: %i", entity.Race))
                 print(string.format("Hair model: %i", entity.Look.Hair))
                 print(string.format("Head model: %d", entity.Look.Head))
