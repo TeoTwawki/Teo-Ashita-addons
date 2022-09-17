@@ -53,26 +53,24 @@ ashita.events.register('command', 'command_cb', function (e)
             return
         end
 
-        local targetHex = string.upper(string.format("%08x", target))
-        local indexHex  = string.upper(string.format("%04x", index))
-        print(string.format("Name: %s  ID: %d (0x%s)  Index: %d (0x%s)", entity.Name, target, targetHex, index, indexHex))
+        print(string.format("Name: %s  ID: %d (0x%08X)  Index: %d (0x%04X)", entity.Name, target, target, index, index))
         print(string.format("Speed: %f  Animation Speed  %d", entity.MovementSpeed * 10, entity.AnimationSpeed * 10))
         print(string.format("PosX: %f  PosY: %f  PosZ: %f", entity.Movement.LocalPosition.X, entity.Movement.LocalPosition.Y, entity.Movement.LocalPosition.Z))
 
         if #args >= 2 then
-            if args[2]:any('flags') or args[3]:any('flags') then
-                print(string.format("Flags0: %d", entity.Render.Flags0)) -- Main Render Flags
-                print(string.format("Flags1: %d", entity.Render.Flags1)) -- Name Flags (Party, Away, Anon)
-                print(string.format("Flags2: %d", entity.Render.Flags2)) -- Name Flags (Bazaar, GM Icon, etc.)
-                print(string.format("Flags3: %d", entity.Render.Flags3)) -- Entity Flags (Shadow)
-                print(string.format("Flags4: %d", entity.Render.Flags4)) -- Name Flags (Name Visibility)
-                print(string.format("Flags5: %d", entity.Render.Flags5)) -- Geomancer Indi's
-                print(string.format("Flags6: %d", entity.Render.Flags6)) -- Unknown
-                print(string.format("Flags7: %d", entity.Render.Flags7)) -- Overhead Flags (Hi-word: Jump Emote, Model Visibility etc.) (Low-word: Job Mastery Stars, Party Seek Mastery Star, etc. [Low-Byte:] Timer of some sort.)
-                print(string.format("Flags8: %d", entity.Render.Flags8)) -- Overhead Flags (Job mastery party.)
+            if args[2]:any('flags') or (#args == 3 and args[3]:any('flags')) then
+                print(string.format("Flags0: 0x%08X", entity.Render.Flags0)) -- Main Render Flags
+                print(string.format("Flags1: 0x%08X", entity.Render.Flags1)) -- Name Flags (Party, Away, Anon)
+                print(string.format("Flags2: 0x%08X", entity.Render.Flags2)) -- Name Flags (Bazaar, GM Icon, etc.)
+                print(string.format("Flags3: 0x%08X", entity.Render.Flags3)) -- Entity Flags (Shadow)
+                print(string.format("Flags4: 0x%08X", entity.Render.Flags4)) -- Name Flags (Name Visibility)
+                print(string.format("Flags5: 0x%08X", entity.Render.Flags5)) -- Geomancer Indi's
+                print(string.format("Flags6: 0x%08X", entity.Render.Flags6)) -- Unknown
+                print(string.format("Flags7: 0x%08X", entity.Render.Flags7)) -- Overhead Flags (Hi-word: Jump Emote, Model Visibility etc.) (Low-word: Job Mastery Stars, Party Seek Mastery Star, etc. [Low-Byte:] Timer of some sort.)
+                print(string.format("Flags8: 0x%08X", entity.Render.Flags8)) -- Overhead Flags (Job mastery party.)
             end
 
-            if args[2]:any('look') or args[3]:any('look') then
+            if args[2]:any('look') or (#args == 3 and args[3]:any('look')) then
                 print(string.format("Race ID: %i", entity.Race))
                 print(string.format("Hair model: %i", entity.Look.Hair))
                 print(string.format("Head model: %d", entity.Look.Head))
