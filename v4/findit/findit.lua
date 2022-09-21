@@ -154,22 +154,25 @@ local function create_storage_dir()
 end
 
 
-local function is_bit_set(slip_inv_entry, bit)
-    local byte = slip_inv_entry.Extra[math.floor((bit - 1) / 8)]
-    if byte < 0 then
-        byte = byte + 256
+local function is_bit_set(slip_inv_entry, bit) 
+    -- For some reason ashita4 outputs a string where ashita3 did number
+    -- This has caused some problems with port mog slips
+    local exDataByte = string.byte(slip_inv_entry.Extra[math.floor((bit - 1) / 8)])
+
+    if exDataByte < 0 then
+        exDataByte = exDataByte + 256
     end
 
     -- this computes the value of the bit for its byte as 2^0 to 2^7
     local bit_value = 2 ^ ((bit - 1) % 8)
 
-    return byte % (2 * bit_value) >= bit_value
+    return exDataByte % (2 * bit_value) >= bit_value
 end
 
 
 local function update_slip_storage(storage, inv_entry, item)
     if slips.items[inv_entry.Id] ~= nil then
-        local slip_name = item.Name[0]
+        local slip_name = item.Name[1]
         storage[slip_name] = T{}
 
         for slip_index, slip_item_id in ipairs(slips.items[inv_entry.Id]) do
@@ -195,7 +198,7 @@ end
 local function update_player_storages()
     local player_name = get_player_name()
     if player_name == nil then
-        error('update_player_storages', 'Couldnt determine player name')
+        error('update_player_storages', 'Couldn\'t determine player name')
         return
     end
 
@@ -213,7 +216,7 @@ local function update_player_storages()
         for i = 0, inv:GetContainerCountMax(container_id), 1 do
             local inv_entry = inv:GetContainerItem(container_id, i)
 
-            if (inv_entry.Id ~= 0 and inv_entry.Id ~= 65535) then
+            if inv_entry.Id ~= 0 and inv_entry.Id ~= 65535 then
                 local item = AshitaCore:GetResourceManager():GetItemById(inv_entry.Id)
 
                 if item then
@@ -355,10 +358,10 @@ local function determine_query_elements(searchparams)
 
             if export then
                 export = string.gsub(export, '%.csv$', '') .. '.csv'
-    
+
                 if string.match(export, '[' .. string.escape('\\/:*?"<>|') .. ']') then
                     export = nil
-    
+
                     error('determine_query_elements', 'The filename cannot contain any of the following characters: \\ / : * ? " < > |')
                 end
             end
@@ -388,7 +391,7 @@ end
 
 
 local function search(char_include, char_exclude, terms)
-    local results       = T{}
+    local results = T{}
     log('search', 'Searching: ' .. terms)
 
     local terms_pattern = build_search_pattern(terms)
