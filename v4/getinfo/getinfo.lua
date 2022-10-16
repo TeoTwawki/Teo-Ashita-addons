@@ -71,16 +71,29 @@ ashita.events.register('command', 'command_cb', function (e)
             end
 
             if args[2]:any('look') or (#args == 3 and args[3]:any('look')) then
-                print(string.format("Race ID: %i", entity.Race))
-                print(string.format("Hair model: %i", entity.Look.Hair))
-                print(string.format("Head model: %d", entity.Look.Head))
-                print(string.format("Body model: %d", entity.Look.Body))
-                print(string.format("Hand model: %d", entity.Look.Hands))
-                print(string.format("Legs model: %d", entity.Look.Legs))
-                print(string.format("Feet model: %d", entity.Look.Feet))
-                print(string.format("Mainhand model: %d", entity.Look.Main))
-                print(string.format("Offhand model ID: %d", entity.Look.Sub))
-                print(string.format("Ranged model ID: %d", entity.Look.Ranged))
+                local b01 = string.format("%02X", entity.Race)
+                local b02 = string.format("%02X", entity.Look.Hair)
+                local b03 = string.format("%04X", entity.Look.Head)
+                local b04 = string.format("%04X", entity.Look.Body)
+                local b05 = string.format("%04X", entity.Look.Hands)
+                local b06 = string.format("%04X", entity.Look.Legs)
+                local b07 = string.format("%04X", entity.Look.Feet)
+                local b08 = string.format("%04X", entity.Look.Main)
+                local b09 = string.format("%04X", entity.Look.Sub)
+                local b10 = string.format("%04X", entity.Look.Ranged)
+                local b11 = "00" -- unknown, maybe ammo byte?
+                local fullMask = b01..b02..b03..b04..b05..b06..b07..b08..b09..b10..b11
+                print(string.format("Race ID: 0x%02X", b01))
+                print(string.format("Hair model: 0x%02X", b02))
+                print(string.format("Head model: 0x%04X", b03))
+                print(string.format("Body model: 0x%04X", b04))
+                print(string.format("Hand model: 0x%04X", b05))
+                print(string.format("Legs model: 0x%04X", b06))
+                print(string.format("Feet model: 0x%04X", b07))
+                print(string.format("Mainhand model: 0x%04X", b08))
+                print(string.format("Offhand model ID: 0x%04X", b09))
+                print(string.format("Ranged model ID: 0x%04X", b10))
+                print("Full model Mask (minus index byte): "..fullMask)
             end
         end
     end
