@@ -83,17 +83,17 @@ ashita.events.register('command', 'command_cb', function (e)
                 local b10 = string.format("%04X", entity.Look.Ranged)
                 local b11 = "00" -- unknown, maybe ammo byte?
                 local fullMask = b01..b02..b03..b04..b05..b06..b07..b08..b09..b10..b11
-                print(string.format("Race ID: 0x%02X", b01))
-                print(string.format("Hair model: 0x%02X", b02))
-                print(string.format("Head model: 0x%04X", b03))
-                print(string.format("Body model: 0x%04X", b04))
-                print(string.format("Hand model: 0x%04X", b05))
-                print(string.format("Legs model: 0x%04X", b06))
-                print(string.format("Feet model: 0x%04X", b07))
-                print(string.format("Mainhand model: 0x%04X", b08))
-                print(string.format("Offhand model ID: 0x%04X", b09))
-                print(string.format("Ranged model ID: 0x%04X", b10))
-                print("Full model Mask (minus index byte): "..fullMask)
+                print(string.format("Race ID: %s", b01))
+                print(string.format("Hair model: %s", b02))
+                print(string.format("Head model: %s", b03))
+                print(string.format("Body model: %s", b04))
+                print(string.format("Hand model: %s", b05))
+                print(string.format("Legs model: %s", b06))
+                print(string.format("Feet model: %s", b07))
+                print(string.format("Mainhand model: %s", b08))
+                print(string.format("Offhand model ID: %s", b09))
+                print(string.format("Ranged model ID: %s", b10))
+                print("Full model Mask (minus index byte): 0x"..fullMask)
             end
         end
     end
