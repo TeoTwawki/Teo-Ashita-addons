@@ -94,6 +94,12 @@ ashita.events.register('command', 'command_cb', function (e)
                 print(string.format("Offhand model ID: %s", b09))
                 print(string.format("Ranged model ID: %s", b10))
                 print("Full model Mask (minus index byte): 0x"..fullMask)
+                local costume = entity.CostumeId
+                if costume > 0 then
+                    print(string.format("Player's Costume ID: %s", costume))
+                else
+                    print("Non player or no costume effect active.")
+                end
             end
         end
     end
