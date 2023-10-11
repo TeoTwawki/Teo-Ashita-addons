@@ -53,9 +53,19 @@ ashita.events.register('command', 'command_cb', function (e)
             return
         end
 
+        -- code modified from something Zach showed me.
+        local rot = entity.Movement.LocalPosition.Yaw
+        if rot < 0 then
+            rot = (math.pi * 2) - (rot * -1)
+        end
+        rot = math.round((rot / (math.pi * 2)) * 256)
+        -- endNawtMyCode
+
+        local zoneID = AshitaCore:GetMemoryManager():GetParty():GetMemberZone(0)
+
         print(string.format("Name: %s  ID: %d (0x%08X)  Index: %d (0x%04X)", entity.Name, target, target, index, index))
         print(string.format("Speed: %f  Animation Speed  %d", entity.MovementSpeed * 10, entity.AnimationSpeed * 10))
-        print(string.format("PosX: %f  PosY: %f  PosZ: %f", entity.Movement.LocalPosition.X, entity.Movement.LocalPosition.Y, entity.Movement.LocalPosition.Z))
+        print(string.format("PosX: %f  PosY: %f  PosZ: %f  Rot: %u/255  ZoneID: %u", entity.Movement.LocalPosition.X, entity.Movement.LocalPosition.Y, entity.Movement.LocalPosition.Z, rot, zoneID))
 
         if #args >= 2 then
             if args[2]:any('flags') or (#args == 3 and args[3]:any('flags')) then
