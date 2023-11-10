@@ -52,6 +52,7 @@ local Containers = T{
     Wardrobe6 = 14,
     Wardrobe7 = 15,
     Wardrobe8 = 16,
+    Recycle = 17,
 }
 
 require 'windower.strings'
@@ -154,15 +155,19 @@ local function create_storage_dir()
 end
 
 
-local function is_bit_set(slip_inv_entry, bit) 
+function hasBit(exDataByte, bit) 
+    return exDataByte % (bit + bit) >= bit;
+end
+
+local function is_bit_set(slip_inv_entry, bit, slip_name) 
     -- For some reason ashita4 outputs a string where ashita3 did number
-    -- This has caused some problems with port mog slips
-    local exDataByte = string.byte(slip_inv_entry.Extra[math.floor((bit - 1) / 8)])
+    -- This has caused some problems with porter mog slips
+    local exDataByte = struct.unpack('L', slip_inv_entry.Extra)
 
     if exDataByte < 0 then
         exDataByte = exDataByte + 256
     end
-
+    -- if exDataByte ~= 0 then print("slip_name: " .. slip_name .. ", exDataByte: " .. exDataByte .. ", Bit: " .. bit) end
     -- this computes the value of the bit for its byte as 2^0 to 2^7
     local bit_value = 2 ^ ((bit - 1) % 8)
 
@@ -176,7 +181,7 @@ local function update_slip_storage(storage, inv_entry, item)
         storage[slip_name] = T{}
 
         for slip_index, slip_item_id in ipairs(slips.items[inv_entry.Id]) do
-            if (is_bit_set(inv_entry, slip_index)) then
+            if (is_bit_set(inv_entry, slip_index, slip_name)) then
                 storage[slip_name][slip_item_id] = 1
             end
         end
@@ -326,7 +331,7 @@ local function handle_incoming_packet(id, original)
         next_sequence = (seq+22)%0x10000 -- 128 packets is about 1 minute. 22 packets is about 10 seconds.
     elseif (id == 0x1E or id == 0x1F or id == 0x20) and do_auto_update then
         -- Inventory Finished packets aren't sent for trades and such, so this is more
-        -- of a catch-all approach. There is a subtantial delay to avoid spam writing.
+        -- of a catch-all approach. There is a substantial delay to avoid spam writing.
         -- The idea is that if you're getting a stream of incoming item packets (like you're gear swapping in an intense fight),
         -- then it will keep putting off triggering the update until you're not.
         next_sequence = (seq+22)%0x10000
